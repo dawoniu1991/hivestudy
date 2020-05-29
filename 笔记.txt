@@ -1,0 +1,342 @@
+alter table mds_dsp_request_daily add partition(dt='2020042801',business='jiangfanMRtest') location 's3://mob-emr-test/fan.jiang/mytest/mytest_hadoop_dsp_org_etl_daily/mds_request_output';
+
+
+
+select device_type,count(*) from mds_dsp_request_daily where dt='2020042801' and business='jiangfanMRtest' group by device_type;
+
+
+ALTER TABLE mds_dsp_request_daily DROP IF EXISTS partition(dt='2020042801',business='jiangfanMRtest');
+
+
+select device_type,count(*) from mds_dsp_request_daily where dt='2020042801' and business='jiangfanMRtest' group by device_type;
+
+
+show partitions mds_dsp_request_daily;
+
+
+describe extended mds_dsp_request_daily partition(dt='2020042801',business='jiangfanMRtest');
+
+desc formatted mds_dsp_request_daily;
+
+
+
+with tmpa as  (select * from etl_dsp_request_daily where dt='2020042801' and business='jiangfanMRtestdebug11') select count(*) from tmpa;
+
+select count(*) from (select * from etl_dsp_request_daily where dt='2020042801' and business='jiangfanMRtestdebug11')as tmpa;
+
+select count(*) from ((select device_id,device_type,platform,country_code,ip,gender,birthday,maker,model,os_version,package_list,androidids,datetime,segment_ids from etl_dsp_request_daily where dt='2020042801' and business='jiangfanMRtestdebug11') except  (select device_id,device_type,platform,country_code,ip,gender,birthday,maker,model,os_version,package_list,androidids,datetime,segment_ids from etl_dsp_request_daily where dt='2020042801' and business='jiangfanMRtestdebug')) as tmp;
+
+
+
+-libjars /data2/andy/work/dmp/online/shell/lib_orc/orc-orcinputwriter-1.0-SNAPSHOT.jar,/data2/andy/work/dmp/online/shell/lib_orc/orc-core-1.5.0.jar,/data2/andy/work/dmp/online/shell/lib_orc/orc-mapreduce-1.5.0.jar,/data2/andy/work/dmp/online/shell/lib_orc/aircompressor-0.10.jar,/data2/andy/work/dmp/online/shell/lib_orc/hive-storage-api-2.6.0.jar,/data2/andy/work/dmp/online/shell/lib_orc/orc-shims-1.5.0.jar
+
+
+
+
+select count(*) from ((select device_id,device_type,platform,country_code,ip,gender,birthday,maker,model,os_version,package_list,androidids,datetime,segment_ids from etl_dsp_request_daily where dt='2020051201' and business='jiangfanMRtest_changemr') except  (select device_id,device_type,platform,country_code,ip,gender,birthday,maker,model,os_version,package_list,androidids,datetime,segment_ids from etl_dsp_request_daily where dt='2020051201' and business='jiangfanSPARKtest_DspOrgLogEtlHoursDemo')) as tmp;
+
+
+
+
+
+
+create table jiangfan11(
+    id      int
+   ,name    string
+   ,hobby   array<string>
+   ,add     map<String,string>
+)
+row format delimited
+fields terminated by ','
+collection items terminated by '-'
+map keys terminated by ':'
+;
+
+
+CREATE EXTERNAL TABLE jiangfan_test_etl_dsp_request_daily(
+  `device_id` string COMMENT 'device id, gaid or idfa', 
+  `device_type` string COMMENT 'device type, gaid or idfa', 
+  `platform` string COMMENT '平台', 
+  `country_code` string COMMENT '二位国家码', 
+  `ip` string COMMENT 'ip地址', 
+  `gender` string COMMENT '性别', 
+  `birthday` string COMMENT '出生年', 
+  `maker` string COMMENT '生产厂家', 
+  `model` string COMMENT '机型', 
+  `os_version` string COMMENT '系统版本', 
+  `package_list` string COMMENT '包名列表', 
+  `androidids` string COMMENT 'android id集合，逗号分隔', 
+  `datetime` string COMMENT '日志时间', 
+  `regions` string COMMENT 'region 列表',
+  `segment_ids` string COMMENT 'double click segment id list')
+PARTITIONED BY ( 
+  `dt` string COMMENT '分区字段，yyyyMMdd', 
+  `business` string COMMENT 'week,month')
+row format delimited fields terminated by '\t';
+
+
+  select count(*)  from adn_dsp.log_adn_dsp_request_orc_hour where concat(yr,mt,dt,hh)='2020042801' and idfa!=googleadid;
+
+
+
+
+spark.read.format("com.mongodb.spark.sql").option("uri", "mongodb://internal-beijing-adServerMongo-virginia-1390640500.us-east-1.elb.amazonaws.com/new_adn.campaign_device_id").option("collection", "campaign_device_id").load().rdd
+
+
+create database if not exists jiangfan_test;
+create database if not exists jiangfan_test location "s3://mob-emr-test/fan.jiang/mytest/myhivetest/hivedb";
+desc database kehan_test;
+desc database extended kehan_test;
+
+drop database if exists jiangfan_test;
+
+CREATE EXTERNAL TABLE dwh_tmp_etl_dsp_request_daily(
+  `device_id` string COMMENT 'device id, gaid or idfa', 
+  `device_type` string COMMENT 'device type, gaid or idfa', 
+  `platform` string COMMENT '平台', 
+  `country_code` string COMMENT '二位国家码', 
+  `ip` string COMMENT 'ip地址', 
+  `gender` string COMMENT '性别', 
+  `birthday` string COMMENT '出生年', 
+  `maker` string COMMENT '生产厂家', 
+  `model` string COMMENT '机型', 
+  `os_version` string COMMENT '系统版本', 
+  `package_list` string COMMENT '包名列表', 
+  `androidids` string COMMENT 'android id集合，逗号分隔', 
+  `datetime` string COMMENT '日志时间', 
+  `segment_ids` string COMMENT 'double click segment id list',
+  `regions` string COMMENT 'region 列表')
+PARTITIONED BY ( 
+  `dt` string COMMENT '分区字段，yyyyMMdd', 
+  `business` string COMMENT 'week,month')
+row format delimited fields terminated by '\t';
+
+
+
+alter table dwh_tmp_etl_dsp_request_daily add partition(dt='20200519',business='jiangfantest') location  "s3://mob-emr-test/dataplatform/DataWareHouse/data/dwh/tmp/etl_dsp_request_daily/2020/05/19";
+
+
+
+CREATE EXTERNAL TABLE BundleMatchMain_output(
+  `device_id` string COMMENT 'device id, gaid or idfa', 
+  `device_type` string COMMENT 'device type, gaid or idfa', 
+  `platform` string COMMENT '平台', 
+  `country` string COMMENT '二位国家码', 
+  `ip` string COMMENT 'ip地址', 
+  `gender` string COMMENT '性别', 
+  `birthday` string COMMENT '出生年', 
+  `maker` string COMMENT '生产厂家', 
+  `model` string COMMENT '机型', 
+  `os_version` string COMMENT '系统版本', 
+  `package_name` string COMMENT '包名列表', 
+  `androidids` string COMMENT 'android id集合，逗号分隔', 
+  `datetime` string COMMENT '日志时间', 
+  `segment_ids` string COMMENT 'double click segment id list',
+  `region` string COMMENT 'region 列表')
+PARTITIONED BY ( 
+  `dt` string COMMENT '分区字段，yyyyMMdd', 
+  `business` string COMMENT 'week,month')
+row format delimited fields terminated by '\t'
+ stored as orc;
+
+
+
+
+show create table etl_adn_sdk_daily;
+
+CREATE TABLE `etl_adn_sdk_daily`(
+  `device_id` string COMMENT 'device id, gaid or idfa', 
+  `device_type` string COMMENT 'device type idfa  gaid', 
+  `platform` string COMMENT 'platform:ios|android', 
+  `model` string COMMENT 'model', 
+  `brand` string COMMENT 'brand', 
+  `install_list` string, 
+  `country` string, 
+  `sdk_version` string)
+PARTITIONED BY ( 
+  `day` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  's3://mob-emr-test/fan.jiang/mytest/adn_sdk/data_output/dwh/etl_adn_sdk_daily'
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT explode(split(regexp_replace(regexp_replace('[{"website":"www.baidu.com","name":"百度"},{"website":"google.com","name":"谷歌"}]', '\\]|\\[',''),'\\}\\,\\{','\\}\\;\\{'),'\\;'));
+
+
+select json_tuple(json, 'website', 'name') from (SELECT explode(split(regexp_replace(regexp_replace('[{"website":"www.baidu.com","name":"百度"},{"website":"google.com","name":"谷歌"}]', '\\[|\\]',''),'\\}\\,\\{','\\}\\;\\{'),'\\;')) as json) test;
+
+
+SELECT explode(split(regexp_replace(regexp_replace(select jsonarraystr from test_json, '\\]|\\[',''),'\\}\\,\\{','\\}\\;\\{'),'\\;'));
+
+
+
+CREATE external TABLE if not exists test_json
+( number string ,
+dateId string COMMENT '评价ID',
+jsonarraystr string COMMENT 'json数组',
+jsonstr string COMMENT 'json字符串'
+)
+partitioned by (day string)
+row format delimited
+fields terminated by '\t'
+stored as textfile
+
+
+alter table test_json add partition (day='20200528') location 's3://mob-emr-test/fan.jiang/mytest/hive_jsonarray_test'
+
+
+select explode(jsonstr) from test_json where day='20200528' 
+
+
+[{"date":"2020-05-17","campaignid":"166281335","label":"test"},{"date":"2018-05-20","campaignid":"166111222","label":"isnot"},{"date":"2020-05-01","campaignid":"234566612","label":"are"}]
+
+
+{"year":"2017","month":"11","week":"03"}
+
+
+select json_tuple(json, 'website', 'name') 
+from 
+(
+select explode(
+split(
+regexp_replace(
+regexp_replace(
+'[{"website":"https://blog.csdn.net/lz6363","name":"浮云"},{"website":"https://blog.csdn.net/lz6363/article/details/86606379","name":"hive中的开窗函数"},{"website":"https://blog.csdn.net/lz6363/article/details/82470278","name":"利用hive统计连续登陆的用户数"}]', '\\}\\,\\{','\\}\\;\\{'
+),'\\[|\\]',''
+),'\\;'
+)
+) as json
+) fuyun;
+
+
+
+
+SELECT number,
+dateId,
+jsonarraystr,
+jsonstr,
+answer 
+from test_json 
+lateral view explode(split(regexp_replace(regexp_replace(test_json.jsonarraystr , '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) b as answer where day='20200528' 
+
+
+
+
+select  json_tuple(t.answer,'date','label','campaignid') from
+(SELECT number,
+dateId,
+jsonarraystr,
+jsonstr,
+b.answer 
+from test_json 
+lateral view explode(split(regexp_replace(regexp_replace(test_json.jsonarraystr , '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) b as answer where day='20200528' ) t 
+
+
+
+CREATE EXTERNAL TABLE campaignid_packagename(
+  `campaignid` string COMMENT 'campaign  id', 
+  `packagename` string COMMENT 'package名称')
+PARTITIONED BY ( 
+  `day` string COMMENT '分区字段，yyyyMMdd')
+row format delimited fields terminated by '\t';
+
+alter table campaignid_packagename add partition (day='20200528') location 's3://mob-emr-test/fan.jiang/mytest/adn_test/spark_connect_mongo'
+
+
+
+SELECT Websites.campaignid, Websites.packagename, access_log.c2
+FROM (select * from campaignid_packagename where day='20200528') Websites
+INNER JOIN (select  json_tuple(t.answer,'date','label','campaignid') from
+(SELECT number,
+dateId,
+jsonarraystr,
+jsonstr,
+b.answer 
+from test_json 
+lateral view explode(split(regexp_replace(regexp_replace(test_json.jsonarraystr , '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) b as answer where day='20200528' ) t ) access_log
+ON Websites.campaignid=access_log.c2;
+
+
+SELECT Websites.campaignid, Websites.packagename, access_log.c2
+FROM (select * from campaignid_packagename where day='20200528') Websites
+INNER JOIN (select  json_tuple(t.answer,'date','label','campaignid') from
+(SELECT number,
+dateId,
+jsonarraystr,
+jsonstr,
+b.answer 
+from test_json 
+lateral view explode(split(regexp_replace(regexp_replace(test_json.jsonarraystr , '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) b as answer where day='20200528' ) t ) access_log
+ON Websites.campaignid=access_log.c2 limit 2;
+
+
+
+SELECT Websites.campaignid, Websites.packagename, access_log.c2
+FROM (select * from campaignid_packagename where day='20200528') Websites
+INNER JOIN (select  json_tuple(t.answer,'date','label','campaignid') from
+(SELECT number,
+dateId,
+jsonarraystr,
+jsonstr,
+bbb.answer 
+from jiangfan_test.test_json aaa 
+lateral view explode(split(regexp_replace(regexp_replace( aaa.jsonarraystr , '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) bbb as answer where day='20200528' ) t ) access_log
+ON Websites.campaignid=access_log.c2 limit 2;
+
+
+
+SELECT Websites.campaignid, Websites.packagename, access_log.c2
+FROM (select * from campaignid_packagename where day='20200528') Websites
+INNER JOIN (select  json_tuple(t.answer,'date','label','campaignid') from
+(SELECT 
+install_list,
+bbb.answer 
+from dwh.etl_adn_sdk_daily aaa 
+lateral view explode(split(regexp_replace(regexp_replace( aaa.install_list, '\\]|\\[' ,'') ,'\\}\\,\\{','\\}\\;\\{' ),'\\;') ) bbb as answer where day='20200527' ) t ) access_log
+ON Websites.campaignid=access_log.c2 limit 7;
+
+
+
+
+CREATE TABLE `test_etl_adn_sdk_daily`(
+  `device_id` string COMMENT 'device id, gaid or idfa', 
+  `device_type` string COMMENT 'device type idfa  gaid', 
+  `platform` string COMMENT 'platform:ios|android', 
+  `model` string COMMENT 'model', 
+  `brand` string COMMENT 'brand', 
+  `install_list` string, 
+  `country` string, 
+  `sdk_version` string)
+PARTITIONED BY ( 
+  `day` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.orc.OrcSerde' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+LOCATION
+  's3://mob-emr-test/fan.jiang/mytest/adn_sdk/data_origin_output/dwh/etl_adn_sdk_daily'
+
+
+
+
+
+
+
+alter table test_etl_adn_sdk_daily add partition(day='20200527') location 's3://mob-emr-test/fan.jiang/mytest/adn_sdk/data_origin_output/dwh/etl_adn_sdk_daily/2020/05/27'
